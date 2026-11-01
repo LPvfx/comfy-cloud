@@ -121,7 +121,7 @@ def push_files(s: dict):
     ssh(s, f"mkdir -p {REMOTE}")
     for item in ("remote/", "custom_nodes/", "workflows/"):
         if (ROOT / item).exists():
-            rsync(s, str(ROOT / item), f"root@{s['host']}:{REMOTE}/{item}", delete=True,
+            rsync(s, f"{ROOT / item}/", f"root@{s['host']}:{REMOTE}/{item}", delete=True,
                   excludes=("__pycache__", ".DS_Store"))
     for f in ("models.yaml", "nodes.txt"):
         rsync(s, str(ROOT / f), f"root@{s['host']}:{REMOTE}/{f}")
@@ -218,7 +218,7 @@ def cmd_up(a):
                 s["host"], s["port"] = target
                 save_state(s)
                 probe = ssh_base(s)[:1] + ["-o", "ConnectTimeout=8", "-o", "BatchMode=yes"] + ssh_base(s)[1:]
-                if subprocess.run(probe + ["test -f /workspace/.vast-ready"],
+                if subprocess.run(probe + ["true"],
                                   capture_output=True).returncode == 0:
                     break
             time.sleep(8)
