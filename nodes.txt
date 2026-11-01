@@ -1,0 +1,5 @@
+# Custom node packs installed on the box (git URLs, optionally @ref to pin).
+# Your own nodes in ./custom_nodes are synced separately and take priority.
+https://github.com/Comfy-Org/ComfyUI-Manager
+https://github.com/Lightricks/ComfyUI-LTXVideo
+https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite

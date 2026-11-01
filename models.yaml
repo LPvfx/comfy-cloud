@@ -1,0 +1,47 @@
+# Model sets, downloaded on the rented box from Hugging Face.
+# `comfy-cloud up --models ltx25`   or later: `comfy-cloud models ltx23-cleanplate`
+#
+# Each file: repo, path in the repo, ComfyUI models/ subfolder it goes in.
+# Files already present are skipped. Paths were checked against Hugging Face
+# on 2026-11-01. Lightricks repos are gated: accept the licence on the model
+# page once and put HF_TOKEN in .env.
+#
+# LTX-2.x licence: community licence, free for companies under $10M ARR -
+# check before using anything for paid/studio work.
+
+sets:
+  smoke: []   # nothing - for testing the pipeline with core nodes only
+
+  # LTX-2.5 distilled, int8 transformer + text encoder (~40GB).
+  # Fits a 32GB card (RTX 5090) comfortably; works on 24GB with offloading.
+  ltx25:
+    - {repo: Lightricks/LTX-2.5, file: diffusion_models/ltx-2.5-22b-distilled-transformer-comfy-int8-convrot.safetensors, dir: diffusion_models}
+    - {repo: Lightricks/LTX-2.5, file: text_encoders/gemma4-12b-with-proj-ltx-2.5-comfy-int8-convrot.safetensors, dir: text_encoders}
+    - {repo: Lightricks/LTX-2.5, file: vae/ltx-2.5-video-vae-bf16.safetensors, dir: vae}
+    - {repo: Lightricks/LTX-2.5, file: vae/ltx-2.5-audio-vae-bf16.safetensors, dir: vae}
+    - {repo: Lightricks/LTX-2.5, file: latent_upscale_models/ltx-2.5-latent-spatial-upscaler-x2-bf16-1.0.safetensors, dir: latent_upscale_models}
+    - {repo: Lightricks/LTX-2.5, file: model_patches/ltx-2.5-duration-head-bf16.safetensors, dir: model_patches}
+
+  # LTX-2.5 full-precision dev + distilled LoRA (~80GB). 48GB+ cards (L40S, A6000, H100).
+  ltx25-full:
+    - {repo: Lightricks/LTX-2.5, file: diffusion_models/ltx-2.5-22b-dev-transformer-bf16.safetensors, dir: diffusion_models}
+    - {repo: Lightricks/LTX-2.5, file: loras/ltx-2.5-22b-distilled-lora-450-bf16.safetensors, dir: loras}
+    - {repo: Lightricks/LTX-2.5, file: text_encoders/gemma4-12b-with-proj-ltx-2.5-bf16.safetensors, dir: text_encoders}
+    - {repo: Lightricks/LTX-2.5, file: vae/ltx-2.5-video-vae-bf16.safetensors, dir: vae}
+    - {repo: Lightricks/LTX-2.5, file: vae/ltx-2.5-audio-vae-bf16.safetensors, dir: vae}
+    - {repo: Lightricks/LTX-2.5, file: latent_upscale_models/ltx-2.5-latent-spatial-upscaler-x2-bf16-1.0.safetensors, dir: latent_upscale_models}
+    - {repo: Lightricks/LTX-2.5, file: latent_upscale_models/ltx-2.5-latent-temporal-upscaler-x2-bf16-1.0.safetensors, dir: latent_upscale_models}
+    - {repo: Lightricks/LTX-2.5, file: model_patches/ltx-2.5-duration-head-bf16.safetensors, dir: model_patches}
+
+  # LTX-2.3 distilled checkpoint + fp8 Gemma 3 encoder (~60GB) - needed for
+  # the 2.3 VFX IC-LoRAs (clean plate etc).
+  ltx23:
+    - {repo: Lightricks/LTX-2.3, file: ltx-2.3-22b-distilled-1.1.safetensors, dir: checkpoints}
+    - {repo: Comfy-Org/ltx-2, file: split_files/text_encoders/gemma_3_12B_it_fp8_scaled.safetensors, dir: text_encoders}
+    - {repo: Lightricks/LTX-2.3, file: ltx-2.3-spatial-upscaler-x2-1.1.safetensors, dir: latent_upscale_models}
+
+  ltx23-cleanplate:   # add on top of ltx23
+    - {repo: Lightricks/LTX-2.3-22b-IC-LoRA-Clean-Plate, file: ltx-2.3-22b-ic-lora-clean-plate-1.0.safetensors, dir: loras}
+
+  # Your own LoRAs etc. kept in Cloudflare R2 (see remote/r2.sh) are synced
+  # separately with `comfy-cloud ssh bash /workspace/comfy-cloud/remote/r2.sh pull`.

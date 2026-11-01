@@ -1,0 +1,22 @@
+{
+  "1": {
+    "class_type": "EmptyImage",
+    "inputs": {"width": 512, "height": 288, "batch_size": 1, "color": 3368601},
+    "_meta": {"title": "Source"}
+  },
+  "2": {
+    "class_type": "LPGrade",
+    "inputs": {"image": ["1", 0], "exposure": 1.0, "gamma": 1.0, "saturation": 1.2, "clamp": true},
+    "_meta": {"title": "Grade"}
+  },
+  "3": {
+    "class_type": "LPImageStats",
+    "inputs": {"image": ["2", 0]},
+    "_meta": {"title": "Stats"}
+  },
+  "4": {
+    "class_type": "SaveImage",
+    "inputs": {"images": ["2", 0], "filename_prefix": "smoke"},
+    "_meta": {"title": "Save"}
+  }
+}
